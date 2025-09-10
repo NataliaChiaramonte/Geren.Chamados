@@ -18,18 +18,18 @@ const Login = () => {
       password: "123"
     },
     {
-      name: "Neymar Junior",
-      password: "123"
-    },
-    {
-      name: "1",
+      name: "Jessica Santos",
       password: "1"
     },
+    {
+      name: "Neymar Junior",
+      password: "123"
+    }
   ]
 
   const handleLogin = () => {
     const userFound = users.find(
-      (user) => user.name == name && user.password == password)
+      (user) => user.name === name && user.password === password)
 
     if (userFound) {
       navigate("/home", { state: { user: userFound } })
@@ -51,23 +51,23 @@ const Login = () => {
   }
 
   return (
-    <div className='login'>
-      <div>
+    <section className='login'>
+      <figure>
         <img src={logo} alt="logo Fatal-System" className='logo-login' />
-      </div>
+      </figure>
       <div className="box-login">
         <h1 className='text-login'>Login</h1>
         <div className='form'>
           
           <div className='inputs'>
             <FaRegUser className='icons' />
-            <input className='input-login' type="text" placeholder='Usuário'
+            <input className='input-login' name='name' type="text" placeholder='Usuário'
               value={name} onChange={(e) => setName(e.target.value)} />
           </div>
 
           <div className='inputs'>
             <TbLockPassword className='icons' />
-            <input className='input-login' type="password" placeholder='Senha'
+            <input className='input-login' name='password' type="password" placeholder='Senha'
               value={password} onChange={(e) => setPassword(e.target.value)}
               onKeyDown={e => e.key === "Enter" && handleLogin()} />
           </div>
@@ -84,7 +84,7 @@ const Login = () => {
 
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
