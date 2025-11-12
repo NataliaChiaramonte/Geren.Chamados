@@ -1,4 +1,6 @@
-﻿namespace Gerenciamento_De_Chamados
+﻿using Gerenciamento_De_Chamados.Helpers;
+
+namespace Gerenciamento_De_Chamados
 {
     partial class Faq
     {
@@ -46,22 +48,22 @@
             this.panelConteudo1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.lblPergunta2 = new System.Windows.Forms.Panel();
-            this.label5 = new System.Windows.Forms.Label();
             this.lblSeta2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.panelConteudo2 = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.panelCabecalho3 = new System.Windows.Forms.Panel();
-            this.lblSeta3 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
+            this.lblSeta3 = new System.Windows.Forms.Label();
             this.panelConteudo3 = new System.Windows.Forms.Panel();
             this.label8 = new System.Windows.Forms.Label();
             this.panelCabecalho4 = new System.Windows.Forms.Panel();
-            this.lblSeta4 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.lblSeta4 = new System.Windows.Forms.Label();
             this.panelConteudo4 = new System.Windows.Forms.Panel();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.roundedPanel1 = new RoundedPanel();
+            this.roundedPanel1 = new Gerenciamento_De_Chamados.RoundedPanel();
             ((System.ComponentModel.ISupportInitialize)(this.PctBox_Logo)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -90,6 +92,7 @@
             this.PctBox_Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PctBox_Logo.TabIndex = 3;
             this.PctBox_Logo.TabStop = false;
+            this.PctBox_Logo.Click += new System.EventHandler(this.PctBox_Logo_Click);
             // 
             // label1
             // 
@@ -180,13 +183,14 @@
             this.lbl_Inicio.AutoSize = true;
             this.lbl_Inicio.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbl_Inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Inicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME__2_;
+            this.lbl_Inicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME_36p;
             this.lbl_Inicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lbl_Inicio.Location = new System.Drawing.Point(59, 34);
             this.lbl_Inicio.Name = "lbl_Inicio";
             this.lbl_Inicio.Size = new System.Drawing.Size(120, 31);
             this.lbl_Inicio.TabIndex = 5;
             this.lbl_Inicio.Text = "      Início";
+            this.lbl_Inicio.Click += new System.EventHandler(this.lbl_Inicio_Click);
             // 
             // lbl_NomeUser
             // 
@@ -208,7 +212,7 @@
             this.panel2.Location = new System.Drawing.Point(325, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1267, 84);
+            this.panel2.Size = new System.Drawing.Size(1267, 83);
             this.panel2.TabIndex = 19;
             // 
             // flowLayoutPanel1
@@ -296,16 +300,6 @@
             this.lblPergunta2.Size = new System.Drawing.Size(1187, 97);
             this.lblPergunta2.TabIndex = 2;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(23, 31);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(502, 29);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "Como acompanho o status do meu chamado?";
-            // 
             // lblSeta2
             // 
             this.lblSeta2.AutoSize = true;
@@ -317,6 +311,16 @@
             this.lblSeta2.TabIndex = 1;
             this.lblSeta2.Text = "▼";
             this.lblSeta2.Click += new System.EventHandler(this.lblSeta2_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(23, 31);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(502, 29);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Como acompanho o status do meu chamado?";
             // 
             // panelConteudo2
             // 
@@ -349,6 +353,16 @@
             this.panelCabecalho3.Size = new System.Drawing.Size(1187, 97);
             this.panelCabecalho3.TabIndex = 4;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(12, 32);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(547, 29);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Como o sistema define a prioridade do chamado?";
+            // 
             // lblSeta3
             // 
             this.lblSeta3.AutoSize = true;
@@ -360,16 +374,6 @@
             this.lblSeta3.TabIndex = 0;
             this.lblSeta3.Text = "▼";
             this.lblSeta3.Click += new System.EventHandler(this.lblSeta3_Click);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(12, 32);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(547, 29);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Como o sistema define a prioridade do chamado?";
             // 
             // panelConteudo3
             // 
@@ -401,6 +405,16 @@
             this.panelCabecalho4.Size = new System.Drawing.Size(1187, 97);
             this.panelCabecalho4.TabIndex = 20;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(29, 38);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(350, 29);
+            this.label9.TabIndex = 1;
+            this.label9.Text = "Esqueci minha senha. E agora?";
+            // 
             // lblSeta4
             // 
             this.lblSeta4.AutoSize = true;
@@ -412,16 +426,6 @@
             this.lblSeta4.TabIndex = 0;
             this.lblSeta4.Text = "▼";
             this.lblSeta4.Click += new System.EventHandler(this.lblSeta4_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(29, 38);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(350, 29);
-            this.label9.TabIndex = 1;
-            this.label9.Text = "Esqueci minha senha. E agora?";
             // 
             // panelConteudo4
             // 
@@ -458,10 +462,11 @@
             // 
             this.roundedPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.roundedPanel1.BackColor = System.Drawing.Color.White;
             this.roundedPanel1.BorderColor = System.Drawing.Color.Transparent;
             this.roundedPanel1.BorderWidth = 1F;
             this.roundedPanel1.Controls.Add(this.label11);
-            this.roundedPanel1.CornerRadius = 15;
+            this.roundedPanel1.CornerRadius = 15F;
             this.roundedPanel1.Location = new System.Drawing.Point(347, 108);
             this.roundedPanel1.Name = "roundedPanel1";
             this.roundedPanel1.Size = new System.Drawing.Size(1213, 982);

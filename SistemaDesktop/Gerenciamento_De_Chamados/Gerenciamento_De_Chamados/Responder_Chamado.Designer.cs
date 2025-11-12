@@ -1,4 +1,6 @@
-﻿namespace Gerenciamento_De_Chamados
+﻿using Gerenciamento_De_Chamados.Helpers;
+
+namespace Gerenciamento_De_Chamados
 {
     partial class Responder_Chamado
     {
@@ -28,18 +30,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Responder_Chamado));
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.lblInicio = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbSair = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.PctBox_Logo = new System.Windows.Forms.PictureBox();
             this.lbl_NomeUser = new System.Windows.Forms.Label();
-            this.roundedPanel1 = new RoundedPanel();
+            this.roundedPanel1 = new Gerenciamento_De_Chamados.RoundedPanel();
+            this.bt_Criar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnVisualizarCh = new System.Windows.Forms.Button();
             this.btnEditarCH = new System.Windows.Forms.Button();
@@ -47,7 +51,6 @@
             this.dgvResponder = new System.Windows.Forms.DataGridView();
             this.teste = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lbSair = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.panel1.SuspendLayout();
@@ -65,7 +68,7 @@
             this.panel2.Location = new System.Drawing.Point(308, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1335, 103);
+            this.panel2.Size = new System.Drawing.Size(1335, 82);
             this.panel2.TabIndex = 22;
             // 
             // pictureBox4
@@ -84,9 +87,9 @@
             // 
             this.lblInicio.AutoSize = true;
             this.lblInicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME__2_;
+            this.lblInicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME_36p;
             this.lblInicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblInicio.Location = new System.Drawing.Point(29, 47);
+            this.lblInicio.Location = new System.Drawing.Point(28, 32);
             this.lblInicio.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblInicio.Name = "lblInicio";
             this.lblInicio.Size = new System.Drawing.Size(127, 31);
@@ -109,18 +112,33 @@
             this.panel1.TabIndex = 21;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // lbSair
+            // 
+            this.lbSair.AutoSize = true;
+            this.lbSair.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSair.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbSair.Image = global::Gerenciamento_De_Chamados.Properties.Resources.move_item_24dp_000000_FILL0_wght400_GRAD0_opsz24;
+            this.lbSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbSair.Location = new System.Drawing.Point(27, 433);
+            this.lbSair.Name = "lbSair";
+            this.lbSair.Size = new System.Drawing.Size(92, 29);
+            this.lbSair.TabIndex = 17;
+            this.lbSair.Text = "      Sair";
+            this.lbSair.Click += new System.EventHandler(this.lbSair_Click);
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Image = global::Gerenciamento_De_Chamados.Properties.Resources.Suporte;
             this.label3.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label3.Location = new System.Drawing.Point(27, 377);
+            this.label3.Location = new System.Drawing.Point(27, 364);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 29);
             this.label3.TabIndex = 13;
             this.label3.Text = "      FAQ";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label1
             // 
@@ -139,10 +157,10 @@
             // PctBox_Logo
             // 
             this.PctBox_Logo.Image = global::Gerenciamento_De_Chamados.Properties.Resources.Imagem_do_WhatsApp_de_2025_09_09_à_s__21_56_18_5730b37d___Editado;
-            this.PctBox_Logo.Location = new System.Drawing.Point(-38, 0);
+            this.PctBox_Logo.Location = new System.Drawing.Point(-37, 0);
             this.PctBox_Logo.Margin = new System.Windows.Forms.Padding(4);
             this.PctBox_Logo.Name = "PctBox_Logo";
-            this.PctBox_Logo.Size = new System.Drawing.Size(393, 248);
+            this.PctBox_Logo.Size = new System.Drawing.Size(393, 249);
             this.PctBox_Logo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PctBox_Logo.TabIndex = 3;
             this.PctBox_Logo.TabStop = false;
@@ -165,17 +183,30 @@
             this.roundedPanel1.BackColor = System.Drawing.Color.White;
             this.roundedPanel1.BorderColor = System.Drawing.Color.Transparent;
             this.roundedPanel1.BorderWidth = 1F;
+            this.roundedPanel1.Controls.Add(this.bt_Criar);
             this.roundedPanel1.Controls.Add(this.label2);
             this.roundedPanel1.Controls.Add(this.btnVisualizarCh);
             this.roundedPanel1.Controls.Add(this.btnEditarCH);
             this.roundedPanel1.Controls.Add(this.btnResponderCH);
             this.roundedPanel1.Controls.Add(this.dgvResponder);
-            this.roundedPanel1.CornerRadius = 15;
+            this.roundedPanel1.CornerRadius = 15F;
             this.roundedPanel1.Location = new System.Drawing.Point(333, 130);
             this.roundedPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.roundedPanel1.Name = "roundedPanel1";
             this.roundedPanel1.Size = new System.Drawing.Size(1267, 820);
             this.roundedPanel1.TabIndex = 28;
+            // 
+            // bt_Criar
+            // 
+            this.bt_Criar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.bt_Criar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bt_Criar.Location = new System.Drawing.Point(1019, 705);
+            this.bt_Criar.Name = "bt_Criar";
+            this.bt_Criar.Size = new System.Drawing.Size(204, 55);
+            this.bt_Criar.TabIndex = 23;
+            this.bt_Criar.Text = "Criar Chamado";
+            this.bt_Criar.UseVisualStyleBackColor = true;
+            this.bt_Criar.Click += new System.EventHandler(this.bt_Criar_Click);
             // 
             // label2
             // 
@@ -197,6 +228,7 @@
             this.btnVisualizarCh.TabIndex = 21;
             this.btnVisualizarCh.Text = "Visualizar";
             this.btnVisualizarCh.UseVisualStyleBackColor = true;
+            this.btnVisualizarCh.Click += new System.EventHandler(this.btnVisualizarCh_Click);
             // 
             // btnEditarCH
             // 
@@ -229,28 +261,28 @@
             this.dgvResponder.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvResponder.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle11.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvResponder.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(247)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvResponder.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvResponder.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvResponder.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.teste,
             this.Column1});
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle12.Padding = new System.Windows.Forms.Padding(5);
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvResponder.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(5);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(242)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvResponder.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvResponder.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(221)))), ((int)(((byte)(221)))), ((int)(((byte)(221)))));
             this.dgvResponder.Location = new System.Drawing.Point(40, 114);
             this.dgvResponder.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -280,20 +312,6 @@
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
             this.Column1.Width = 125;
-            // 
-            // lbSair
-            // 
-            this.lbSair.AutoSize = true;
-            this.lbSair.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbSair.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbSair.Image = global::Gerenciamento_De_Chamados.Properties.Resources.move_item_24dp_000000_FILL0_wght400_GRAD0_opsz24;
-            this.lbSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbSair.Location = new System.Drawing.Point(27, 433);
-            this.lbSair.Name = "lbSair";
-            this.lbSair.Size = new System.Drawing.Size(92, 29);
-            this.lbSair.TabIndex = 17;
-            this.lbSair.Text = "      Sair";
-            this.lbSair.Click += new System.EventHandler(this.lbSair_Click);
             // 
             // Responder_Chamado
             // 
@@ -344,5 +362,6 @@
         private System.Windows.Forms.Button btnVisualizarCh;
         private System.Windows.Forms.Button btnEditarCH;
         private System.Windows.Forms.Label lbSair;
+        private System.Windows.Forms.Button bt_Criar;
     }
 }

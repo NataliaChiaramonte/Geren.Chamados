@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gerenciamento_De_Chamados.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -62,9 +63,9 @@ namespace Gerenciamento_De_Chamados
         }
         private void HomeTecnico_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Funcoes.SessaoUsuario.Nome) && !string.IsNullOrEmpty(Funcoes.SessaoUsuario.FuncaoUsuario))
+            if (!string.IsNullOrEmpty(SessaoUsuario.Nome) && !string.IsNullOrEmpty(SessaoUsuario.FuncaoUsuario))
             {
-                Home_Tecnico.Text = $"Olá, {Funcoes.SessaoUsuario.Nome} ({Funcoes.SessaoUsuario.FuncaoUsuario})";
+                Home_Tecnico.Text = $"Olá, {SessaoUsuario.Nome} ({SessaoUsuario.FuncaoUsuario})";
             }
             else
             {
@@ -74,7 +75,7 @@ namespace Gerenciamento_De_Chamados
 
         private void lbSair_Click(object sender, EventArgs e)
         {
-
+            FormHelper.Sair(this);
         }
     }
 }

@@ -1,106 +1,139 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Sql;
-using System.Data.SqlClient;
+﻿using Gerenciamento_De_Chamados.Helpers;
+using Gerenciamento_De_Chamados.Models; 
+using Gerenciamento_De_Chamados.Repositories;
+using Gerenciamento_De_Chamados.Services;
+using Gerenciamento_De_Chamados.Validacao;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using System.Windows.Forms;
 
 namespace Gerenciamento_De_Chamados
 {
     public partial class Cadastro_de_Usuarios : Form
     {
+
+
+        private readonly IUsuarioService _usuarioService;
+
         public Cadastro_de_Usuarios()
         {
             InitializeComponent();
             this.Load += Cadastro_de_Usuarios_Load;
+            dtpCadDN.Value = DateTime.Now;
+
+
+            IUsuarioRepository usuarioRepository = new UsuarioRepository();
+            // Instancia o serviço REAL, injetando o repositório
+            _usuarioService = new UsuarioService(usuarioRepository);
         }
 
-        private void btnCadastroAdd_Click(object sender, EventArgs e)
-        {
-            string CadastroRg = txtCadastroRG.Text.Trim();
-            string CadastroCPF = txtCadastroCpf.Text.Trim();
-            string CadastroNome = txtCadastroNome.Text.Trim();
-            string CadastroUsuario = txtCadastroLogin.Text.Trim();
-            string CadastroEmail = txtCadastroEmail.Text.Trim();
-            string CadastroSenhaDigitada = txtCadastroSenha.Text.Trim();
-            string CadastroFuncaoUsuario = cbxCadastroFuncao.Text;
-            string CadastroSexo = comboBoxCadastroSexo.Text;
-            string CadastroSetor = cBoxCadSetor.Text;
-            DateTime CadastroDataDeNascimento = dtpCadDN.Value;
 
-            // 🔎 Validação básica
-            if (string.IsNullOrWhiteSpace(CadastroUsuario) ||
-                CadastroUsuario == "Digite seu usuário, apenas letras ou números.")
+        private async void btnCadastroAdd_Click(object sender, EventArgs e)
+        {
+            // Coleta e validação simples
+            string login = txtCadastroLogin.Text.Trim();
+            string senhaDigitada = txtCadastroSenha.Text.Trim();
+            string nome = txtCadastroNome.Text.Trim();
+            string cpf = txtCadastroCpf.Text.Trim();
+            string rg = txtCadastroRG.Text.Trim();
+            string funcao = cbxCadastroFuncao.Text;
+            string sexo = comboBoxCadastroSexo.Text;
+            string setor = cBoxCadSetor.Text;
+            DateTime dataNascimento = dtpCadDN.Value;
+            string email = txtCadastroEmail.Text.Trim();
+
+            if (!ValidadorUsuario.IsNomeValido(nome))
+            {
+                MessageBox.Show("O campo 'Nome' é obrigatório.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ValidadorUsuario.IsEmailValido(email))
+            {
+                MessageBox.Show("O formato do 'Email' é inválido.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ValidadorUsuario.IsCPFValido(cpf))
+            {
+                MessageBox.Show("O formato do 'CPF' é inválido. Deve conter 11 dígitos.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validação de Login (pode usar a mesma regra do nome)
+            if (!ValidadorUsuario.IsNomeValido(login) || login == "Digite seu usuário, apenas letras ou números.")
+            {
+                MessageBox.Show("O campo 'Login' é obrigatório.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!ValidadorUsuario.IsSenhaForte(senhaDigitada))
+            {
+                MessageBox.Show("A 'Senha' é inválida. Requisitos: \n- Mínimo 8 caracteres\n- Pelo menos 1 letra maiúscula\n- Pelo menos 1 número", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validações simples para ComboBoxes
+            if (string.IsNullOrWhiteSpace(funcao))
+            {
+                MessageBox.Show("Selecione uma 'Função'.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(setor))
+            {
+                MessageBox.Show("Selecione um 'Setor'.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(login) ||
+                login == "Digite seu usuário, apenas letras ou números.")
             {
                 MessageBox.Show("⚠️ Login inválido. Digite um login válido.");
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(CadastroSenhaDigitada))
+            if (string.IsNullOrWhiteSpace(senhaDigitada))
             {
                 MessageBox.Show("⚠️ Senha é obrigatória.");
                 return;
             }
 
-            string hashSenha = SenhaHelper.GerarHashSenha(CadastroSenhaDigitada);
 
-            string connectionString = "Server=fatalsystemsrv1.database.windows.net;Database=DbaFatal-System;User Id=fatalsystem;Password=F1234567890m@;";
-
-            using (SqlConnection conexao = new SqlConnection(connectionString))
+            // 2. Cria o Objeto Model
+            Usuario novoUsuario = new Usuario
             {
-                try
-                {
-                    conexao.Open();
+                Nome = txtCadastroNome.Text.Trim(),
+                CPF = txtCadastroCpf.Text.Trim(),
+                RG = txtCadastroRG.Text.Trim(),
+                FuncaoUsuario = cbxCadastroFuncao.Text,
+                Sexo = comboBoxCadastroSexo.Text,
+                Setor = cBoxCadSetor.Text,
+                DataDeNascimento = dtpCadDN.Value,
+                Email = txtCadastroEmail.Text.Trim(),
+                Login = login,
+                Senha = senhaDigitada
+            };
 
-                    // 🔎 Verifica se já existe login igual
-                    string checkSql = "SELECT COUNT(*) FROM Usuario WHERE Login = @login";
-                    using (SqlCommand checkCmd = new SqlCommand(checkSql, conexao))
-                    {
-                        checkCmd.Parameters.AddWithValue("@login", CadastroUsuario);
-                        int count = (int)checkCmd.ExecuteScalar();
-                        if (count > 0)
-                        {
-                            MessageBox.Show("⚠️ Já existe um usuário com esse login. Escolha outro.");
-                            return;
-                        }
-                    }
 
-                    // ✅ Insere novo usuário
-                    string sql = @"INSERT INTO Usuario 
-                                   (Login, Nome, CPF, RG, FuncaoUsuario, Sexo, Setor, DataDeNascimento, Senha, Email)
-                                   VALUES (@login, @Nome, @CPF, @RG, @FuncaoUsuario, @Sexo, @Setor, @DataDeNascimento, @senha, @Email)";
+            // Chama o Repositório e trata a resposta
+            try
+            {
+                // Esta única linha agora faz a validação E o salvamento
+                await _usuarioService.AdicionarUsuarioAsync(novoUsuario);
 
-                    using (SqlCommand cmd = new SqlCommand(sql, conexao))
-                    {
-                        cmd.Parameters.AddWithValue("@Nome", CadastroNome);
-                        cmd.Parameters.AddWithValue("@CPF", CadastroCPF);
-                        cmd.Parameters.AddWithValue("@RG", CadastroRg);
-                        cmd.Parameters.AddWithValue("@FuncaoUsuario", CadastroFuncaoUsuario);
-                        cmd.Parameters.AddWithValue("@Sexo", CadastroSexo);
-                        cmd.Parameters.AddWithValue("@Setor", CadastroSetor);
-                        cmd.Parameters.AddWithValue("@DataDeNascimento", CadastroDataDeNascimento);
-                        cmd.Parameters.AddWithValue("@login", CadastroUsuario);
-                        cmd.Parameters.AddWithValue("@senha", hashSenha);
-                        cmd.Parameters.AddWithValue("@Email", CadastroEmail);
+                MessageBox.Show("✅ Usuário cadastrado com sucesso!");
+                this.Close();
+            }
+            catch (Exception ex)
+            {
 
-                        cmd.ExecuteNonQuery();
-                        MessageBox.Show("✅ Usuário cadastrado com sucesso!");
-
-                        this.Close();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("❌ Erro ao cadastrar: " + ex.Message);
-                }
+                MessageBox.Show("❌ Erro ao cadastrar: " + ex.Message);
             }
         }
+
+        #region Código de Estética e Navegação 
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -108,36 +141,68 @@ namespace Gerenciamento_De_Chamados
             Color corInicioPanel = Color.White;
             Color corFimPanel = ColorTranslator.FromHtml("#232325");
             LinearGradientBrush gradientePanel = new LinearGradientBrush(
-                     panel1.ClientRectangle,
-                    corInicioPanel,
-                    corFimPanel,
-                    LinearGradientMode.Vertical); // Exemplo com gradiente horizontal
+                         panel1.ClientRectangle,
+                         corInicioPanel,
+                         corFimPanel,
+                         LinearGradientMode.Vertical);
             g.FillRectangle(gradientePanel, panel1.ClientRectangle);
-
-
-
         }
         private void Cadastro_de_Usuarios_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Funcoes.SessaoUsuario.Nome))
-                lbl_NomeUser.Text = ($"Bem vindo {Funcoes.SessaoUsuario.Nome}");
+            if (!string.IsNullOrEmpty(SessaoUsuario.Nome))
+                lbl_NomeUser.Text = ($" {SessaoUsuario.Nome}");
             else
                 lbl_NomeUser.Text = "Usuário não identificado";
         }
 
         private void lbl_Inicio_Click(object sender, EventArgs e)
         {
-            Funcoes.BotaoHome(this);
+            FormHelper.BotaoHome(this);
         }
 
         private void PctBox_Inicio_Click(object sender, EventArgs e)
         {
-            Funcoes.BotaoHome(this);
+            FormHelper.BotaoHome(this);
         }
 
         private void lbSair_Click(object sender, EventArgs e)
         {
-            Funcoes.Sair(this);
+            FormHelper.Sair(this);
+        }
+        #endregion
+
+        private void txtCadastroCpf_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true; // Ignora a tecla (não deixa ela aparecer no textbox)
+            }
+        }
+
+        private void txtCadastroRG_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void Cadastro_de_Usuarios_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Color corInicio = Color.White;
+            Color corFim = ColorTranslator.FromHtml("#232325");
+
+            using (LinearGradientBrush gradiente = new LinearGradientBrush(
+                this.ClientRectangle, corInicio, corFim, LinearGradientMode.Horizontal))
+            {
+                g.FillRectangle(gradiente, this.ClientRectangle);
+            }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            FormHelper.FAQ(this);
         }
     }
 }

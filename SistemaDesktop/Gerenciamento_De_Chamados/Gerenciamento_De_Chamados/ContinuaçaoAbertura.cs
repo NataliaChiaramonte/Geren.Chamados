@@ -1,4 +1,10 @@
-﻿using System;
+﻿
+using Gerenciamento_De_Chamados.Helpers;
+using Gerenciamento_De_Chamados.Models;
+using Gerenciamento_De_Chamados.Repositories;
+using Gerenciamento_De_Chamados.Services;
+using Gerenciamento_De_Chamados.Validacao;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -10,18 +16,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace Gerenciamento_De_Chamados
 {
     public partial class ContinuaçaoAbertura : Form
     {
         private AberturaChamados aberturaChamados;
+        private readonly ImageHelper _imageHelper;
+        private readonly IEmailService _emailService;
+        private readonly IChamadoRepository _chamadoRepository;
+        private readonly IArquivoRepository _arquivoRepository;
+        private readonly ChamadoService _chamadoService;
 
-        // Recebe a tela de abertura de chamados já preenchida
-        public ContinuaçaoAbertura(AberturaChamados abertura)
+
+        public ContinuaçaoAbertura(AberturaChamados abertura, ImageHelper imageHelper)
         {
             InitializeComponent();
             aberturaChamados = abertura;
+
+            _imageHelper = imageHelper;
+            _chamadoRepository = new ChamadoRepository();
+            _arquivoRepository = new ArquivoRepository();
+            _emailService = new EmailService();
+
+            _chamadoService = new ChamadoService(
+            _chamadoRepository,
+            _arquivoRepository,
+            _emailService,
+            new AIService()
+            );
+
             this.Load += ContinuaçaoAbertura_Load;
         }
 
@@ -36,121 +59,92 @@ namespace Gerenciamento_De_Chamados
             string CategoriaChamado = aberturaChamados.cboxCtgChamado.Text;
             byte[] AnexarArquivo = aberturaChamados.arquivoAnexado;
 
-            string status = "Pendente";
-                        
-            string problemaIA = "Pendente";
-            string solucaoIA = "Pendente";
-            string prioridadeIA = "Analise";
+            // ValidadorChamado para título e descrição
+            if (!ValidadorChamado.IsTituloValido(TituloChamado))
+            {
+                MessageBox.Show("O título é obrigatório e deve ter mais de 5 caracteres.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Para a execução, não continua
+            }
+
+            if (!ValidadorChamado.IsDescricaoValida(DescricaoChamado))
+            {
+                MessageBox.Show("A descrição é obrigatória e deve ter mais de 10 caracteres.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return; // Para a execução
+            }
+
+            if (!ValidadorChamado.IsPessoasAfetadasValido(PessoasAfetadas))
+            {
+                MessageBox.Show("Por favor, selecione o número de pessoas afetadas.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Validação simples para os ComboBox (apenas para saber se algo foi selecionado)
+            if (string.IsNullOrWhiteSpace(PessoasAfetadas))
+            {
+                MessageBox.Show("Por favor, selecione o número de pessoas afetadas.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(ImpedeTrabalho))
+            {
+                MessageBox.Show("Por favor, informe se o problema impede o trabalho.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(OcorreuAnteriormente))
+            {
+                MessageBox.Show("Por favor, informe se o problema ocorreu anteriormente.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (string.IsNullOrWhiteSpace(CategoriaChamado))
+            {
+                MessageBox.Show("Por favor, selecione uma categoria.", "Erro de Validação", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+         
+
+            int idUsuario = SessaoUsuario.IdUsuario;
+
             try
             {
-                List<string> solucoesAnteriores = await Funcoes.BuscarSolucoesAnteriores(CategoriaChamado);
-                AIService aiService = new AIService(); 
-                var (problema,prioridade, solucao) = await aiService.AnalisarChamado(TituloChamado,PessoasAfetadas,
-                    OcorreuAnteriormente, ImpedeTrabalho, DescricaoChamado, CategoriaChamado, solucoesAnteriores);
-                problemaIA = problema;
-                solucaoIA = solucao;
-                prioridadeIA = prioridade;
-            }
+
+                DateTime horaDeBrasilia = DateTime.Now;
+
+                Chamado novoChamado = new Chamado
+                {
+                    Titulo = TituloChamado,
+                    PrioridadeChamado = "Análise", // Valor padrão
+                    Descricao = DescricaoChamado,
+                    DataChamado = horaDeBrasilia,
+                    StatusChamado = "Pendente",
+                    Categoria = CategoriaChamado,
+                    FK_IdUsuario = SessaoUsuario.IdUsuario,
+                    PessoasAfetadas = PessoasAfetadas,
+                    ImpedeTrabalho = ImpedeTrabalho,
+                    OcorreuAnteriormente = OcorreuAnteriormente
+                };
 
 
-
-            catch (Exception aiEx)
-            {
-                MessageBox.Show($"Erro ao analisar chamado com IA: {aiEx.Message}. O chamado será criado sem sugestão.", "Aviso IA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 
+                string tipoAnexo = _imageHelper.UltimoTipoArquivo ?? "application/octet-stream";
+                string nomeAnexo = _imageHelper.UltimoNomeArquivo ?? "anexo_chamado.png";
+
+                int idChamado = await _chamadoService.CriarNovoChamadoAsync(novoChamado, AnexarArquivo, nomeAnexo, tipoAnexo);
+
+
+                MessageBox.Show("Chamado aberto com sucesso! Número do chamado: " + idChamado);
+
+                var telaFim = new FimChamado(idChamado);
+                telaFim.ShowDialog();
+
+                aberturaChamados.Close();
+                this.Close();
+
             }
-
-            string connectionString = "Server=fatalsystemsrv1.database.windows.net;Database=DbaFatal-System;User Id=fatalsystem;Password=F1234567890m@;";
-
-            int idUsuario = Funcoes.SessaoUsuario.IdUsuario;
-            string sql = @"INSERT INTO Chamado
-                                    (Titulo, PrioridadeChamado, Descricao, DataChamado, StatusChamado, Categoria,
-                                    FK_IdUsuario, PessoasAfetadas, ImpedeTrabalho, OcorreuAnteriormente,
-                                    PrioridadeSugeridaIA, ProblemaSugeridoIA, SolucaoSugeridaIA)
-                   OUTPUT INSERTED.IdChamado
-                   VALUES (@Titulo, @PrioridadeChamado, @Descricao, @DataChamado,
-                            @StatusChamado, @Categoria, @FK_IdUsuario, @PessoasAfetadas,
-                            @ImpedeTrabalho, @OcorreuAnteriormente, @PrioridadeSugeridaIA, @ProblemaSugeridoIA, @SolucaoSugeridaIA)";
-
-            using (SqlConnection conexao = new SqlConnection(connectionString))
+            catch (Exception ex)
             {
-                try
-                {
-                    conexao.Open();
-
-                    int idChamado;
-                    string prioridade = "Análise";
-                    
-
-                    using (SqlCommand cmd = new SqlCommand(sql, conexao))
-                    {
-                        TimeZoneInfo brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
-                        DateTime horaDeBrasilia = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brasilTimeZone);
-
-
-                        cmd.Parameters.AddWithValue("@Titulo", TituloChamado);
-                        cmd.Parameters.AddWithValue("@PrioridadeChamado", prioridade);
-                        cmd.Parameters.AddWithValue("@Descricao", DescricaoChamado);
-                        cmd.Parameters.AddWithValue("@DataChamado", horaDeBrasilia);
-                        cmd.Parameters.AddWithValue("@StatusChamado", status);
-                        cmd.Parameters.AddWithValue("@Categoria", CategoriaChamado);
-                        cmd.Parameters.AddWithValue("@FK_IdUsuario", idUsuario);
-                        cmd.Parameters.AddWithValue("@PessoasAfetadas", PessoasAfetadas);
-                        cmd.Parameters.AddWithValue("@ImpedeTrabalho", ImpedeTrabalho);
-                        cmd.Parameters.AddWithValue("@OcorreuAnteriormente", OcorreuAnteriormente);
-
-                        cmd.Parameters.AddWithValue("@PrioridadeSugeridaIA", prioridadeIA);
-                        cmd.Parameters.AddWithValue("@ProblemaSugeridoIA", problemaIA);
-                        cmd.Parameters.AddWithValue("@SolucaoSugeridaIA", solucaoIA);
-                        idChamado = (int)cmd.ExecuteScalar();
-                    }
-
-                    if (AnexarArquivo != null && AnexarArquivo.Length > 0)
-                    {
-                        string sqlArquivo = @"INSERT INTO Arquivo 
-                                              (TipoArquivo, NomeArquivo, Arquivo, FK_IdChamado)
-                                              VALUES (@TipoArquivo, @NomeArquivo, @Arquivo, @FK_IdChamado)";
-                        using (SqlCommand cmdArq = new SqlCommand(sqlArquivo, conexao))
-                        {
-                            cmdArq.Parameters.AddWithValue("@TipoArquivo", "imagem/png");
-                            cmdArq.Parameters.AddWithValue("@NomeArquivo", "anexo.png");
-                            cmdArq.Parameters.AddWithValue("@Arquivo", AnexarArquivo);
-                            cmdArq.Parameters.AddWithValue("@FK_IdChamado", idChamado);
-                            cmdArq.ExecuteNonQuery();
-                        }
-                    }
-
-                    MessageBox.Show("Chamado aberto com sucesso! Número do chamado: " + idChamado);
-                    // Envia o e-mail com os dados do chamado
-                    Funcoes.EnviarEmailChamado(
-                                                 TituloChamado,
-                                                 DescricaoChamado,
-                                                 CategoriaChamado,
-                                                 idChamado,
-                                                 prioridadeIA, 
-                                                 status,     
-                                                 PessoasAfetadas,
-                                                 ImpedeTrabalho,
-                                                 OcorreuAnteriormente,
-                                                 problemaIA,
-                                                 solucaoIA,
-                                                 AnexarArquivo, 
-                                                 "anexo_chamado.png" 
-);
-
-                    var telaFim = new FimChamado(idChamado);
-                    telaFim.ShowDialog();
-
-                    aberturaChamados.Close();
-                    this.Close();
-
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao abrir chamado: " + ex.Message);
-                }
+                MessageBox.Show("Erro ao gravar chamado no banco: " + ex.Message);
             }
         }
+
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -161,28 +155,46 @@ namespace Gerenciamento_De_Chamados
                      panel1.ClientRectangle,
                     corInicioPanel,
                     corFimPanel,
-                    LinearGradientMode.Vertical); // Exemplo com gradiente horizontal
+                    LinearGradientMode.Vertical);
             g.FillRectangle(gradientePanel, panel1.ClientRectangle);
         }
         private void ContinuaçaoAbertura_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Funcoes.SessaoUsuario.Nome))
-                lbl_NomeUser.Text = ($"Bem vindo {Funcoes.SessaoUsuario.Nome}");
+            if (!string.IsNullOrEmpty(SessaoUsuario.Nome))
+                lbl_NomeUser.Text = ($" {SessaoUsuario.Nome}");
         }
 
         private void lbl_Inicio_Click(object sender, EventArgs e)
         {
-            Funcoes.BotaoHome(this);
+            FormHelper.BotaoHome(this);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            Funcoes.BotaoHome(this);
+            FormHelper.BotaoHome(this);
         }
 
         private void lbSair_Click(object sender, EventArgs e)
         {
-            Funcoes.Sair(this);
+            FormHelper.Sair(this);
+        }
+
+        private void ContinuaçaoAbertura_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Color corInicio = Color.White;
+            Color corFim = ColorTranslator.FromHtml("#232325");
+
+            using (LinearGradientBrush gradiente = new LinearGradientBrush(
+                this.ClientRectangle, corInicio, corFim, LinearGradientMode.Horizontal))
+            {
+                g.FillRectangle(gradiente, this.ClientRectangle);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

@@ -10,141 +10,72 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Gerenciamento_De_Chamados.Models;      
+using Gerenciamento_De_Chamados.Repositories; 
+using Gerenciamento_De_Chamados.Services;
+using Gerenciamento_De_Chamados.Helpers;
 
 namespace Gerenciamento_De_Chamados
 {
     public partial class Responder_Chamado : Form
     {
-        string connectionString = "Server=fatalsystemsrv1.database.windows.net;Database=DbaFatal-System;User Id=fatalsystem;Password=F1234567890m@;";
-        private DataTable chamadosTable = new DataTable();
-        public Responder_Chamado()
+        
 
+       
+        private readonly IChamadoRepository _chamadoRepository;
+        private DataTable chamadosTable = new DataTable();
+
+        public Responder_Chamado()
         {
             InitializeComponent();
-            ConfigurarGrade(); // PASSO 1: Configura as colunas
 
-
-            // evento para carregar os dados ao abrir o form
-            this.Load += Responder_Chamado_Load;
             
+            _chamadoRepository = new ChamadoRepository();
+
+            ConfigurarGrade();
+            this.Load += Responder_Chamado_Load;
         }
 
         private void Responder_Chamado_Load(object sender, EventArgs e)
-
         {
             CarregarChamados();
-
         }
+
         private void ConfigurarGrade()
         {
+            // Seu código de ConfigurarGrade() permanece o mesmo
             dgvResponder.RowTemplate.Height = 35;
-
             dgvResponder.ColumnHeadersHeight = 35;
-
             dgvResponder.AutoGenerateColumns = false;
             dgvResponder.Columns.Clear();
-
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "IdChamado",
-                DataPropertyName = "IdChamado",
-                HeaderText = "ID",
-                Width = 60
-            });
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "Titulo",
-                DataPropertyName = "Titulo",
-                HeaderText = "Titulo",
-                Width = 250
-            });
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "Descricao",
-                DataPropertyName = "Descricao",
-                HeaderText = "Descricao",
-                Width = 450
-            });
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "Prioridade",
-                DataPropertyName = "Prioridade",
-                HeaderText = "Prioridade",
-                Width = 100
-            });
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "data",
-                DataPropertyName = "data",
-                HeaderText = "data",
-                Width = 100
-            });
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "Status",
-                DataPropertyName = "Status",
-                HeaderText = "Status",
-                Width = 120
-            });
-
-            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn
-            {
-                Name = "IdUsuario",
-                DataPropertyName = "IdUsuario",
-                HeaderText = "Usuario",
-                AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
-            });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "IdChamado", DataPropertyName = "IdChamado", HeaderText = "ID", Width = 60 });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "Titulo", DataPropertyName = "Titulo", HeaderText = "Titulo", Width = 250 });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "Descricao", DataPropertyName = "Descricao", HeaderText = "Descricao", Width = 450 });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "Prioridade", DataPropertyName = "Prioridade", HeaderText = "Prioridade", Width = 100 });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "data", DataPropertyName = "data", HeaderText = "data", Width = 100 });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "Status", DataPropertyName = "Status", HeaderText = "Status", Width = 120 });
+            dgvResponder.Columns.Add(new DataGridViewTextBoxColumn { Name = "IdUsuario", DataPropertyName = "IdUsuario", HeaderText = "Usuario", AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill });
         }
 
+       
         private void CarregarChamados(string filtro = "")
         {
-            string sql = @"
-                            SELECT 
-                                    u.IdUsuario,
-                                    c.IdChamado, 
-                                    u.Nome AS Usuario, 
-                                    c.Titulo, 
-                                    c.PrioridadeChamado AS Prioridade, 
-                                    c.Descricao, 
-                                    c.DataChamado AS Data, 
-                                    c.StatusChamado AS Status, 
-                                    c.Categoria 
-                                    FROM Chamado c
-                                    JOIN Usuario u ON c.FK_IdUsuario = u.IdUsuario
-                                    WHERE (@filtro = '' OR c.Titulo LIKE '%' + @filtro + '%'
-                                    OR c.PrioridadeChamado LIKE '%' + @filtro + '%'
-                                    OR c.Descricao LIKE '%' + @filtro + '%'
-                                    OR c.StatusChamado LIKE '%' + @filtro + '%'
-                                    OR c.Categoria LIKE '%' + @filtro + '%'
-                                    OR u.Nome LIKE '%' + @filtro + '%')
-                                    ORDER BY c.DataChamado DESC";
+            
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                using (SqlDataAdapter da = new SqlDataAdapter(sql, conn))
-                {
-                    da.SelectCommand.Parameters.AddWithValue("@filtro", filtro ?? string.Empty);
-
-                    chamadosTable.Clear();
-                    da.Fill(chamadosTable);
-
-                    // Atualiza a fonte de dados
-                    dgvResponder.DataSource = chamadosTable;
-                }
+                // Chama o repositório
+                chamadosTable = _chamadoRepository.BuscarTodosFiltrados(filtro);
+                dgvResponder.DataSource = chamadosTable;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Erro ao carregar chamados: " + ex.Message);
             }
-
-
-
-
-
-
         }
 
+
       
+
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -154,7 +85,7 @@ namespace Gerenciamento_De_Chamados
                      panel1.ClientRectangle,
                     corInicioPanel,
                     corFimPanel,
-                    LinearGradientMode.Vertical); // Exemplo com gradiente horizontal
+                    LinearGradientMode.Vertical);
             g.FillRectangle(gradientePanel, panel1.ClientRectangle);
         }
 
@@ -165,148 +96,80 @@ namespace Gerenciamento_De_Chamados
             Color corFim = ColorTranslator.FromHtml("#232325");
 
             using (LinearGradientBrush gradiente = new LinearGradientBrush(
-                this.ClientRectangle, corInicio, corFim, LinearGradientMode.Horizontal))
+                  this.ClientRectangle, corInicio, corFim, LinearGradientMode.Horizontal))
             {
                 g.FillRectangle(gradiente, this.ClientRectangle);
             }
         }
 
+    
         private async void dgvResponder_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Verifica se o clique foi em uma linha válida (não no cabeçalho)
-            if (e.RowIndex < 0)
-            {
-                return;
-            }
+            if (e.RowIndex < 0) return;
 
-            // 2. Adiciona um cursor de "carregando"
             this.Cursor = Cursors.WaitCursor;
 
             try
             {
                 DataGridViewRow row = dgvResponder.Rows[e.RowIndex];
                 object idValue = row.Cells["IdChamado"].Value;
-                int idChamadoSelecionado;
 
-                if (idValue != null && int.TryParse(idValue.ToString(), out idChamadoSelecionado))
+                if (idValue != null && int.TryParse(idValue.ToString(), out int idChamadoSelecionado))
                 {
+                    //Buscar dados do chamado usando o repositório
+                    Chamado chamado = await _chamadoRepository.BuscarPorIdAsync(idChamadoSelecionado);
 
-                    string connectionString = "Server=fatalsystemsrv1.database.windows.net;Database=DbaFatal-System;User Id=fatalsystem;Password=F1234567890m@;";
-
-
-                    string titulo, descricao, categoria, pessoasAfetadas, impedeTrabalho, ocorreuAnteriormente;
-                    string prioridadeIA, problemaIA, solucaoIA;
-
-                    using (SqlConnection conexao = new SqlConnection(connectionString))
+                    if (chamado == null)
                     {
-                        await conexao.OpenAsync(); 
+                        MessageBox.Show("Chamado não encontrado no banco de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-                       
-                        string sqlSelect = @"
-                    SELECT Titulo, Descricao, Categoria, PessoasAfetadas, 
-                           ImpedeTrabalho, OcorreuAnteriormente, 
-                           PrioridadeSugeridaIA, ProblemaSugeridoIA, SolucaoSugeridaIA 
-                    FROM Chamado 
-                    WHERE IdChamado = @IdChamado";
+                    // Verificar se a IA precisa ser executada
+                    if (string.IsNullOrEmpty(chamado.PrioridadeSugeridaIA) || chamado.PrioridadeSugeridaIA == "Pendente" || chamado.PrioridadeSugeridaIA == "Análise Pendente")
+                    {
+                        MessageBox.Show("Este chamado ainda não foi triado. Iniciando análise da IA... Isso pode levar alguns segundos.", "Análise da IA", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        using (SqlCommand cmdSelect = new SqlCommand(sqlSelect, conexao))
+                        try
                         {
-                            cmdSelect.Parameters.AddWithValue("@IdChamado", idChamadoSelecionado);
+                            // Buscar soluções anteriores (agora pelo repositório)
+                            List<string> solucoesAnteriores = await _chamadoRepository.BuscarSolucoesAnterioresAsync(chamado.Categoria);
 
-                            using (SqlDataReader reader = await cmdSelect.ExecuteReaderAsync())
+                            AIService aiService = new AIService();
+                            var (novoProblema, novaPrioridade, novaSolucao) = await aiService.AnalisarChamado(
+                                chamado.Titulo,
+                                chamado.PessoasAfetadas,
+                                chamado.OcorreuAnteriormente,
+                                chamado.ImpedeTrabalho,
+                                chamado.Descricao,
+                                chamado.Categoria,
+                                solucoesAnteriores
+                            );
+
+                            if (novaPrioridade == "Não identificado" || novaPrioridade.Contains("Erro"))
                             {
-                                if (!await reader.ReadAsync())
-                                {
-                                    MessageBox.Show("Chamado não encontrado no banco de dados.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    return; // Sai se não encontrar o chamado
-                                }
-
-
-                                titulo = reader["Titulo"].ToString();
-                                descricao = reader["Descricao"].ToString();
-                                categoria = reader["Categoria"].ToString();
-                                pessoasAfetadas = reader["PessoasAfetadas"].ToString();
-                                impedeTrabalho = reader["ImpedeTrabalho"].ToString();
-                                ocorreuAnteriormente = reader["OcorreuAnteriormente"].ToString();
-
-                                
-                                prioridadeIA = reader["PrioridadeSugeridaIA"]?.ToString();
-                                problemaIA = reader["ProblemaSugeridoIA"]?.ToString();
-                                solucaoIA = reader["SolucaoSugeridaIA"]?.ToString();
-                            } 
-                        }
-
-
-                        if (string.IsNullOrEmpty(prioridadeIA) || prioridadeIA == "Análise Pendente")
-                        {
-                            MessageBox.Show("Este chamado ainda não foi triado. Iniciando análise da IA... Isso pode levar alguns segundos.", "Análise da IA", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            try
-                            {
-                                List<string> solucoesAnteriores = await Funcoes.BuscarSolucoesAnteriores(categoria);
-
-                                AIService aiService = new AIService();
-                                var (novoProblema, novaPrioridade, novaSolucao) = await aiService.AnalisarChamado(
-                                    titulo,
-                                    pessoasAfetadas,
-                                    ocorreuAnteriormente,
-                                    impedeTrabalho,
-                                    descricao,
-                                    categoria,
-                                    solucoesAnteriores
-                                );
-
-
-                                if (novaPrioridade == "Não identificado" || novaPrioridade.Contains("Erro"))
-                                {
-                                    MessageBox.Show($"A IA não conseguiu analisar o chamado. Detalhes: {novaSolucao}", "Erro na IA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                                }
-                                else
-                                {
-
-                                    string sqlUpdate = @"
-                                UPDATE Chamado 
-                                SET ProblemaSugeridoIA = @Problema, 
-                                    SolucaoSugeridaIA = @Solucao, 
-                                    PrioridadeSugeridaIA = @Prioridade 
-                                WHERE IdChamado = @IdChamado";
-
-                                    using (SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, conexao))
-                                    {
-                                        cmdUpdate.Parameters.AddWithValue("@Problema", novoProblema);
-                                        cmdUpdate.Parameters.AddWithValue("@Solucao", novaSolucao);
-                                        cmdUpdate.Parameters.AddWithValue("@Prioridade", novaPrioridade);
-                                        cmdUpdate.Parameters.AddWithValue("@IdChamado", idChamadoSelecionado);
-                                        await cmdUpdate.ExecuteNonQueryAsync(); // Salva a triagem
-                                    }
-
-                                    //Atualiza a linha do DataGridView na tela
-                                    if (dgvResponder.Columns.Contains("PrioridadeSugeridaIA"))
-                                    {
-                                        row.Cells["PrioridadeSugeridaIA"].Value = novaPrioridade;
-                                    }
-
-                                    if (dgvResponder.Columns.Contains("ProblemaSugeridoIA"))
-                                    {
-                                        row.Cells["ProblemaSugeridoIA"].Value = novoProblema;
-                                    }
-
-                                    if (dgvResponder.Columns.Contains("SolucaoSugeridaIA"))
-                                    {
-                                        row.Cells["SolucaoSugeridaIA"].Value = novaSolucao;
-                                    }
-                                }
+                                MessageBox.Show($"A IA não conseguiu analisar o chamado. Detalhes: {novaSolucao}", "Erro na IA", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
-                            catch (Exception aiEx)
+                            else
                             {
-                                MessageBox.Show($"Erro ao executar a análise da IA: {aiEx.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                
+                                // Atualizar o chamado no BD com os dados da IA, via repositório
+                                await _chamadoRepository.AtualizarSugestoesIAAsync(idChamadoSelecionado, novaPrioridade, novoProblema, novaSolucao);
+
+                                // (O código original não atualizava o DataGridView, então mantemos esse comportamento)
                             }
                         }
-                    } // Conexão é fechada aqui
+                        catch (Exception aiEx)
+                        {
+                            MessageBox.Show($"Erro ao executar a análise da IA: {aiEx.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
+                    // Abrir a tela de Análise 
                     var analisechamado = new AnaliseChamado(idChamadoSelecionado);
                     analisechamado.ShowDialog();
+
+                    // Recarrega os chamados após fechar a tela de análise
+                    CarregarChamados();
                 }
                 else
                 {
@@ -319,24 +182,40 @@ namespace Gerenciamento_De_Chamados
             }
             finally
             {
-
                 this.Cursor = Cursors.Default;
-            }   
             }
+        }
 
         private void lblInicio_Click(object sender, EventArgs e)
         {
-            Funcoes.BotaoHome(this);
+            FormHelper.BotaoHome(this);
         }
 
         private void PctBox_Logo_Click(object sender, EventArgs e)
         {
-            Funcoes.BotaoHome(this);
+            FormHelper.BotaoHome(this);
         }
 
         private void lbSair_Click(object sender, EventArgs e)
         {
-            Funcoes.Sair(this);
+            FormHelper.Sair(this);
+        }
+
+        private void btnVisualizarCh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            FormHelper.FAQ(this);
+        }
+
+        private void bt_Criar_Click(object sender, EventArgs e)
+        {
+            var criarchamado = new AberturaChamados();
+            criarchamado.Show();
+            this.Hide();
         }
     }
-    }
+}

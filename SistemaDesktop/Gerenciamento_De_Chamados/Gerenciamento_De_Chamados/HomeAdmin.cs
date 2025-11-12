@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gerenciamento_De_Chamados.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -53,12 +54,34 @@ namespace Gerenciamento_De_Chamados
 
         private void btn_Usuario_Click(object sender, EventArgs e)
         {
+            var telaUsuario = new GerenciarUsuarios();
+            telaUsuario.Show();
+            this.Hide();
 
         }
 
         private void btn_Chamado_Click(object sender, EventArgs e)
         {
+            var telaChamado = new Responder_Chamado();
+            telaChamado.Show();
+            this.Hide();
+        }
 
+        private void lbSair_Click(object sender, EventArgs e)
+        {
+            FormHelper.Sair(this);
+        }
+
+        private void HomeAdmin_Load(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(SessaoUsuario.Nome) && !string.IsNullOrEmpty(SessaoUsuario.FuncaoUsuario))
+            {
+                Home_Tecnico.Text = $"Olá, {SessaoUsuario.Nome} ({SessaoUsuario.FuncaoUsuario})";
+            }
+            else
+            {
+                Home_Tecnico.Text = "Usuário não identificado";
+            }
         }
     }
 }

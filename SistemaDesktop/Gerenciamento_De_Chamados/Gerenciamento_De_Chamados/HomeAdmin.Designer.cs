@@ -1,4 +1,6 @@
-﻿namespace Gerenciamento_De_Chamados
+﻿using Gerenciamento_De_Chamados.Helpers;
+
+namespace Gerenciamento_De_Chamados
 {
     partial class HomeAdmin
     {
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeAdmin));
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbl_NomeUser = new System.Windows.Forms.Label();
             this.lbl_Inicio = new System.Windows.Forms.Label();
@@ -37,7 +40,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.PctBox_Logo = new System.Windows.Forms.PictureBox();
-            this.roundedPanel1 = new RoundedPanel();
+            this.roundedPanel1 = new Gerenciamento_De_Chamados.RoundedPanel();
             this.btn_Chamado = new System.Windows.Forms.Button();
             this.btn_Relatorio = new System.Windows.Forms.Button();
             this.btn_Usuario = new System.Windows.Forms.Button();
@@ -61,7 +64,7 @@
             this.panel2.Location = new System.Drawing.Point(325, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1318, 103);
+            this.panel2.Size = new System.Drawing.Size(1318, 83);
             this.panel2.TabIndex = 31;
             // 
             // lbl_NomeUser
@@ -78,13 +81,13 @@
             // 
             this.lbl_Inicio.AutoSize = true;
             this.lbl_Inicio.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbl_Inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Inicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME__2_;
+            this.lbl_Inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Inicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.home_40dp_000000_FILL1_wght400_GRAD0_opsz40;
             this.lbl_Inicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbl_Inicio.Location = new System.Drawing.Point(59, 34);
+            this.lbl_Inicio.Location = new System.Drawing.Point(57, 28);
             this.lbl_Inicio.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbl_Inicio.Name = "lbl_Inicio";
-            this.lbl_Inicio.Size = new System.Drawing.Size(127, 31);
+            this.lbl_Inicio.Size = new System.Drawing.Size(142, 36);
             this.lbl_Inicio.TabIndex = 5;
             this.lbl_Inicio.Text = "       Início";
             // 
@@ -128,6 +131,7 @@
             this.lbSair.Size = new System.Drawing.Size(92, 29);
             this.lbSair.TabIndex = 17;
             this.lbSair.Text = "      Sair";
+            this.lbSair.Click += new System.EventHandler(this.lbSair_Click);
             // 
             // label3
             // 
@@ -183,10 +187,10 @@
             this.roundedPanel1.Controls.Add(this.groupBox1);
             this.roundedPanel1.Controls.Add(this.groupBox2);
             this.roundedPanel1.Controls.Add(this.Home_Tecnico);
-            this.roundedPanel1.CornerRadius = 15;
-            this.roundedPanel1.Location = new System.Drawing.Point(359, 144);
+            this.roundedPanel1.CornerRadius = 15F;
+            this.roundedPanel1.Location = new System.Drawing.Point(359, 113);
             this.roundedPanel1.Name = "roundedPanel1";
-            this.roundedPanel1.Size = new System.Drawing.Size(1236, 809);
+            this.roundedPanel1.Size = new System.Drawing.Size(1236, 840);
             this.roundedPanel1.TabIndex = 32;
             // 
             // btn_Chamado
@@ -272,9 +276,11 @@
             this.Controls.Add(this.roundedPanel1);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "HomeAdmin";
             this.Text = "HomeAdmin";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.HomeAdmin_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.HomeAdmin_Paint);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();

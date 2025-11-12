@@ -31,24 +31,26 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FimChamado));
             this.panel2 = new System.Windows.Forms.Panel();
             this.lbl_NomeUser = new System.Windows.Forms.Label();
+            this.lbl_Inicio = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbSair = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.PctBox_Logo = new System.Windows.Forms.PictureBox();
             this.btnVerChamado = new System.Windows.Forms.Button();
             this.btn_PaginaInicial = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.lbl_Inicio = new System.Windows.Forms.Label();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.PctBox_Logo = new System.Windows.Forms.PictureBox();
-            this.lbSair = new System.Windows.Forms.Label();
+            this.roundedPanel1 = new Gerenciamento_De_Chamados.RoundedPanel();
             this.panel2.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PctBox_Logo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.roundedPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel2
@@ -61,7 +63,7 @@
             this.panel2.Location = new System.Drawing.Point(325, 0);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1096, 84);
+            this.panel2.Size = new System.Drawing.Size(1096, 83);
             this.panel2.TabIndex = 33;
             // 
             // lbl_NomeUser
@@ -74,97 +76,12 @@
             this.lbl_NomeUser.Size = new System.Drawing.Size(0, 25);
             this.lbl_NomeUser.TabIndex = 8;
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Controls.Add(this.lbSair);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.PctBox_Logo);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(325, 977);
-            this.panel1.TabIndex = 32;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // btnVerChamado
-            // 
-            this.btnVerChamado.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnVerChamado.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnVerChamado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVerChamado.Location = new System.Drawing.Point(367, 878);
-            this.btnVerChamado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnVerChamado.Name = "btnVerChamado";
-            this.btnVerChamado.Size = new System.Drawing.Size(205, 49);
-            this.btnVerChamado.TabIndex = 34;
-            this.btnVerChamado.Text = "Ver seu chamado";
-            this.btnVerChamado.UseVisualStyleBackColor = true;
-            this.btnVerChamado.Click += new System.EventHandler(this.btnVerChamado_Click);
-            // 
-            // btn_PaginaInicial
-            // 
-            this.btn_PaginaInicial.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_PaginaInicial.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_PaginaInicial.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_PaginaInicial.Location = new System.Drawing.Point(1239, 878);
-            this.btn_PaginaInicial.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btn_PaginaInicial.Name = "btn_PaginaInicial";
-            this.btn_PaginaInicial.Size = new System.Drawing.Size(157, 49);
-            this.btn_PaginaInicial.TabIndex = 35;
-            this.btn_PaginaInicial.Text = "Página inicial";
-            this.btn_PaginaInicial.UseVisualStyleBackColor = true;
-            this.btn_PaginaInicial.Click += new System.EventHandler(this.btn_PaginaInicial_Click);
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 34F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(364, 164);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(859, 65);
-            this.label2.TabIndex = 36;
-            this.label2.Text = "Chamado enviado com sucesso!";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.SystemColors.ButtonShadow;
-            this.label4.Location = new System.Drawing.Point(468, 245);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(629, 31);
-            this.label4.TabIndex = 37;
-            this.label4.Text = "Seu chamado foi registrado e está sendo analisado";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(390, 758);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(201, 83);
-            this.textBox1.TabIndex = 39;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
-            this.pictureBox2.Image = global::Gerenciamento_De_Chamados.Properties.Resources.check_circle_350dp_9DC384_FILL0_wght400_GRAD0_opsz48;
-            this.pictureBox2.Location = new System.Drawing.Point(591, 334);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(452, 419);
-            this.pictureBox2.TabIndex = 38;
-            this.pictureBox2.TabStop = false;
-            // 
             // lbl_Inicio
             // 
             this.lbl_Inicio.AutoSize = true;
             this.lbl_Inicio.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbl_Inicio.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_Inicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME__2_;
+            this.lbl_Inicio.Image = global::Gerenciamento_De_Chamados.Properties.Resources.HOME_36p;
             this.lbl_Inicio.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.lbl_Inicio.Location = new System.Drawing.Point(59, 34);
             this.lbl_Inicio.Name = "lbl_Inicio";
@@ -184,6 +101,36 @@
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox4.TabIndex = 3;
             this.pictureBox4.TabStop = false;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.lbSair);
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.PctBox_Logo);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(325, 977);
+            this.panel1.TabIndex = 32;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
+            // 
+            // lbSair
+            // 
+            this.lbSair.AutoSize = true;
+            this.lbSair.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lbSair.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSair.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lbSair.Image = global::Gerenciamento_De_Chamados.Properties.Resources.move_item_24dp_000000_FILL0_wght400_GRAD0_opsz24;
+            this.lbSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbSair.Location = new System.Drawing.Point(12, 389);
+            this.lbSair.Name = "lbSair";
+            this.lbSair.Size = new System.Drawing.Size(92, 29);
+            this.lbSair.TabIndex = 17;
+            this.lbSair.Text = "      Sair";
+            this.lbSair.Click += new System.EventHandler(this.lbSair_Click);
             // 
             // label3
             // 
@@ -224,20 +171,94 @@
             this.PctBox_Logo.TabStop = false;
             this.PctBox_Logo.Click += new System.EventHandler(this.PctBox_Logo_Click);
             // 
-            // lbSair
+            // btnVerChamado
             // 
-            this.lbSair.AutoSize = true;
-            this.lbSair.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lbSair.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbSair.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbSair.Image = global::Gerenciamento_De_Chamados.Properties.Resources.move_item_24dp_000000_FILL0_wght400_GRAD0_opsz24;
-            this.lbSair.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbSair.Location = new System.Drawing.Point(12, 389);
-            this.lbSair.Name = "lbSair";
-            this.lbSair.Size = new System.Drawing.Size(92, 29);
-            this.lbSair.TabIndex = 17;
-            this.lbSair.Text = "      Sair";
-            this.lbSair.Click += new System.EventHandler(this.lbSair_Click);
+            this.btnVerChamado.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnVerChamado.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnVerChamado.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVerChamado.Location = new System.Drawing.Point(26, 767);
+            this.btnVerChamado.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnVerChamado.Name = "btnVerChamado";
+            this.btnVerChamado.Size = new System.Drawing.Size(205, 49);
+            this.btnVerChamado.TabIndex = 34;
+            this.btnVerChamado.Text = "Ver seu chamado";
+            this.btnVerChamado.UseVisualStyleBackColor = true;
+            this.btnVerChamado.Click += new System.EventHandler(this.btnVerChamado_Click);
+            // 
+            // btn_PaginaInicial
+            // 
+            this.btn_PaginaInicial.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_PaginaInicial.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_PaginaInicial.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_PaginaInicial.Location = new System.Drawing.Point(863, 767);
+            this.btn_PaginaInicial.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btn_PaginaInicial.Name = "btn_PaginaInicial";
+            this.btn_PaginaInicial.Size = new System.Drawing.Size(157, 49);
+            this.btn_PaginaInicial.TabIndex = 35;
+            this.btn_PaginaInicial.Text = "Página inicial";
+            this.btn_PaginaInicial.UseVisualStyleBackColor = true;
+            this.btn_PaginaInicial.Click += new System.EventHandler(this.btn_PaginaInicial_Click);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 34F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(53, 45);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(859, 65);
+            this.label2.TabIndex = 36;
+            this.label2.Text = "Chamado enviado com sucesso!";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.ButtonShadow;
+            this.label4.Location = new System.Drawing.Point(157, 127);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(629, 31);
+            this.label4.TabIndex = 37;
+            this.label4.Text = "Seu chamado foi registrado e está sendo analisado";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(390, 758);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(201, 83);
+            this.textBox1.TabIndex = 39;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this.pictureBox2.Image = global::Gerenciamento_De_Chamados.Properties.Resources.check_circle_350dp_9DC384_FILL0_wght400_GRAD0_opsz48;
+            this.pictureBox2.Location = new System.Drawing.Point(257, 223);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(452, 419);
+            this.pictureBox2.TabIndex = 38;
+            this.pictureBox2.TabStop = false;
+            // 
+            // roundedPanel1
+            // 
+            this.roundedPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.roundedPanel1.BackColor = System.Drawing.Color.White;
+            this.roundedPanel1.BorderColor = System.Drawing.Color.White;
+            this.roundedPanel1.BorderWidth = 1F;
+            this.roundedPanel1.Controls.Add(this.label2);
+            this.roundedPanel1.Controls.Add(this.btn_PaginaInicial);
+            this.roundedPanel1.Controls.Add(this.pictureBox2);
+            this.roundedPanel1.Controls.Add(this.btnVerChamado);
+            this.roundedPanel1.Controls.Add(this.label4);
+            this.roundedPanel1.CornerRadius = 15F;
+            this.roundedPanel1.Location = new System.Drawing.Point(346, 111);
+            this.roundedPanel1.Name = "roundedPanel1";
+            this.roundedPanel1.Size = new System.Drawing.Size(1050, 854);
+            this.roundedPanel1.TabIndex = 40;
             // 
             // FimChamado
             // 
@@ -245,25 +266,24 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1421, 977);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.btn_PaginaInicial);
-            this.Controls.Add(this.btnVerChamado);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.roundedPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FimChamado";
             this.Text = "FimChamado";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.FimChamado_Paint);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PctBox_Logo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.roundedPanel1.ResumeLayout(false);
+            this.roundedPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,5 +306,6 @@
         private System.Windows.Forms.Label lbl_NomeUser;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label lbSair;
+        private RoundedPanel roundedPanel1;
     }
 }
